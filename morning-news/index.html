@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="bento-warm">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FrontierTech Daily | 前沿科技与计科求职早报站</title>
+  <style>
+    /* ========================================================
+       Apple Warm White Bento Grid & Modern Linear Theme Tokens
+       ======================================================== */
+    :root[data-theme="bento-warm"] {
+      --bg-canvas: #F8F7F4;
+      --bg-surface: #FFFFFF;
+      --bg-surface-subtle: #F2F0EB;
+      --bg-surface-hover: #EBE8E1;
+      --border-subtle: rgba(0, 0, 0, 0.07);
+      --border-strong: rgba(0, 0, 0, 0.14);
+      --text-main: #1D1D1F;
+      --text-muted: #6E6E73;
+      --text-subtle: #86868B;
+      --accent-primary: #0066CC;
+      --accent-primary-hover: #0055B3;
+      --accent-emerald: #059669;
+      --accent-violet: #7C3AED;
+      --accent-amber: #D97706;
+      --accent-rose: #E11D48;
+      --badge-sota-bg: #EEF2FF;
+      --badge-sota-text: #4338CA;
+      --badge-repo-bg: #ECFDF5;
+      --badge-repo-text: #065F46;
+      --badge-interview-bg: #FEF3C7;
+      --badge-interview-text: #92400E;
+      --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04), 0 2px 8px -1px rgba(0, 0, 0, 0.02);
+      --card-shadow-hover: 0 10px 25px -4px rgba(0, 0, 0, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
+      --glass-blur: blur(12px);
+    }
+
+    :root[data-theme="linear-dark"] {
+      --bg-canvas: #0B0D11;
+      --bg-surface: #14171F;
+      --bg-surface-subtle: #1C202B;
+      --bg-surface-hover: #262B3A;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.18);
+      --text-main: #F1F3F9;
+      --text-muted: #9BA3B8;
+      --text-subtle: #687289;
+      --accent-primary: #38BDF8;
+      --accent-primary-hover: #0284C7;
+      --accent-emerald: #10B981;
+      --accent-violet: #A855F7;
+      --accent-amber: #F59E0B;
+      --accent-rose: #F43F5E;
+      --badge-sota-bg: rgba(56, 189, 248, 0.15);
+      --badge-sota-text: #7DD3FC;
+      --badge-repo-bg: rgba(16, 185, 129, 0.15);
+      --badge-repo-text: #6EE7B7;
+      --badge-interview-bg: rgba(245, 158, 11, 0.15);
+      --badge-interview-text: #FCD34D;
+      --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+      --card-shadow-hover: 0 10px 30px -4px rgba(56, 189, 248, 0.12), 0 4px 12px rgba(0, 0, 0, 0.5);
+      --glass-blur: blur(16px);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background-color: var(--bg-canvas);
+      color: var(--text-main);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ================= Header ================= */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg-surface);
+      backdrop-filter: var(--glass-blur);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #0066CC, #7C3AED);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 18px;
+      box-shadow: 0 4px 12px rgba(0, 102, 204, 0.25);
+    }
+
+    .brand-title {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .brand-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Global Search */
+    .search-box {
+      flex: 1;
+      max-width: 480px;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 9px 14px 9px 36px;
+      background: var(--bg-surface-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--text-main);
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent-primary);
+      background: var(--bg-surface);
+      box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.12);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-subtle);
+      pointer-events: none;
+    }
+
+    /* Header Action Buttons */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid transparent;
+      outline: none;
+      user-select: none;
+    }
+
+    .btn-primary {
+      background: var(--accent-primary);
+      color: #FFFFFF;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--bg-surface-subtle);
+      color: var(--text-main);
+      border-color: var(--border-subtle);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--border-strong);
+    }
+
+    .btn-icon {
+      padding: 8px;
+      border-radius: 10px;
+      background: var(--bg-surface-subtle);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    .btn-icon:hover {
+      background: var(--bg-surface-hover);
+    }
+
+    /* ================= App Layout ================= */
+    .app-container {
+      display: flex;
+      flex: 1;
+      max-width: 1680px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 20px 24px;
+      gap: 24px;
+    }
+
+    /* Left Sidebar: Bento Archive Drawer */
+    .archive-sidebar {
+      width: 290px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .bento-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: var(--card-shadow);
+    }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .sidebar-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .issue-count-badge {
+      font-size: 11px;
+      background: var(--bg-surface-subtle);
+      padding: 2px 8px;
+      border-radius: 12px;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .issue-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: calc(100vh - 220px);
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .issue-timeline::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .issue-timeline::-webkit-scrollbar-thumb {
+      background: var(--border-subtle);
+      border-radius: 4px;
+    }
+
+    .issue-item {
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: var(--bg-surface-subtle);
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .issue-item:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--border-strong);
+      transform: translateX(2px);
+    }
+
+    .issue-item.active {
+      background: var(--bg-surface);
+      border-color: var(--accent-primary);
+      box-shadow: 0 4px 12px rgba(0, 102, 204, 0.12);
+    }
+
+    .issue-item-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .issue-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent-primary);
+    }
+
+    .issue-date {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .issue-tags-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .tag-chip {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 6px;
+      background: var(--bg-surface);
+      color: var(--text-muted);
+      font-weight: 500;
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* Main Dual-Column Content */
+    .content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-width: 0;
+    }
+
+    /* Issue Headline Card */
+    .headline-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .headline-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .headline-title {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.4px;
+      color: var(--text-main);
+    }
+
+    .headline-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 900px;
+      line-height: 1.5;
+    }
+
+    .filter-chips-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-top: 4px;
+    }
+
+    .filter-chip {
+      font-size: 12px;
+      padding: 5px 12px;
+      border-radius: 20px;
+      background: var(--bg-surface-subtle);
+      color: var(--text-main);
+      border: 1px solid var(--border-subtle);
+      cursor: pointer;
+      font-weight: 500;
+      user-select: none;
+    }
+
+    .filter-chip:hover, .filter-chip.active {
+      background: var(--text-main);
+      color: var(--bg-canvas);
+      border-color: var(--text-main);
+    }
+
+    /* Dual Columns Bento Grid */
+    .columns-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 1024px) {
+      .columns-grid {
+        grid-template-columns: 1fr;
+      }
+      .archive-sidebar {
+        width: 240px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .app-container {
+        flex-direction: column;
+      }
+      .archive-sidebar {
+        width: 100%;
+      }
+    }
+
+    .column-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .column-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2px 6px;
+    }
+
+    .column-title {
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-main);
+    }
+
+    .column-count {
+      font-size: 12px;
+      color: var(--text-muted);
+      background: var(--bg-surface-subtle);
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+
+    /* News Cards */
+    .news-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .news-card:hover {
+      box-shadow: var(--card-shadow-hover);
+      border-color: var(--border-strong);
+      transform: translateY(-2px);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .card-tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 8px;
+    }
+
+    .card-tag.tag-sota {
+      background: var(--badge-sota-bg);
+      color: var(--badge-sota-text);
+    }
+
+    .card-tag.tag-repo {
+      background: var(--badge-repo-bg);
+      color: var(--badge-repo-text);
+    }
+
+    .card-tag.tag-interview {
+      background: var(--badge-interview-bg);
+      color: var(--badge-interview-text);
+    }
+
+    .card-source {
+      font-size: 11px;
+      color: var(--text-subtle);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-stars {
+      background: rgba(245, 158, 11, 0.12);
+      color: #D97706;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: var(--text-main);
+      text-decoration: none;
+    }
+
+    .card-title:hover {
+      color: var(--accent-primary);
+    }
+
+    .card-summary {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* Breakthrough Callout Box */
+    .callout-box {
+      background: var(--bg-surface-subtle);
+      border-left: 3px solid var(--accent-primary);
+      border-radius: 0 10px 10px 0;
+      padding: 10px 12px;
+      font-size: 12px;
+      color: var(--text-main);
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      line-height: 1.5;
+    }
+
+    .callout-icon {
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 10px;
+      margin-top: 4px;
+    }
+
+    .card-link {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent-primary);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .card-link:hover {
+      text-decoration: underline;
+    }
+
+    .btn-copy-card {
+      background: transparent;
+      border: none;
+      font-size: 11px;
+      color: var(--text-subtle);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 6px;
+      border-radius: 6px;
+    }
+
+    .btn-copy-card:hover {
+      background: var(--bg-surface-subtle);
+      color: var(--text-main);
+    }
+
+    /* Toast Notification */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: var(--text-main);
+      color: var(--bg-canvas);
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 500;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      max-width: 520px;
+      width: 90%;
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-title {
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .btn-close {
+      background: none;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+  </style>
+  <script src="archive_data.js"></script>
+</head>
+<body>
+
+  <!-- ================= Header ================= -->
+  <header>
+    <div class="brand-wrap">
+      <div class="brand-logo">FT</div>
+      <div>
+        <div class="brand-title">FRONTIERTECH · 早报站</div>
+        <div class="brand-subtitle">前沿 SOTA / JEPA 世界模型 & 计科求职面经</div>
+      </div>
+    </div>
+
+    <!-- Live Search -->
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" class="search-input" placeholder="搜索 JEPA、世界模型、开源项目、大厂面经、LeetCode 真题..." oninput="handleSearch()">
+    </div>
+
+    <!-- Actions -->
+    <div class="header-actions">
+      <button class="btn btn-secondary" onclick="copyCurrentMarkdown()" title="复制本期 Markdown">
+        📋 复制 MD
+      </button>
+      <button class="btn btn-secondary" onclick="pushToFeishu()" id="btnPushFeishu" title="推送到飞书应用">
+        📢 推送飞书
+      </button>
+      <button class="btn btn-secondary" onclick="exportStaticSite()" title="一键导出为纯静态网页包">
+        📦 导出静态站
+      </button>
+      <button class="btn btn-primary" onclick="fetchTodayLive()" id="btnFetchLive" title="立即爬取今日最新期刊">
+        🚀 抓取今日
+      </button>
+      <button class="btn-icon" onclick="toggleTheme()" title="切换明暗主题" id="themeBtn">
+        🌓
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= Main App ================= -->
+  <div class="app-container">
+
+    <!-- Left Sidebar: Bento Archive Timeline -->
+    <aside class="archive-sidebar">
+      <div class="bento-card">
+        <div class="sidebar-header">
+          <div class="sidebar-title">
+            <span>📅 往期期刊时间轴</span>
+          </div>
+          <span class="issue-count-badge" id="issueCountBadge">0 期</span>
+        </div>
+        <div class="issue-timeline" id="issueTimelineList">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="content-area">
+
+      <!-- Current Issue Headline Bento -->
+      <section class="headline-card" id="headlineCard">
+        <div class="headline-meta">
+          <span id="currentIssueNumberBadge" class="issue-badge">ISSUE #--</span>
+          <span id="currentIssueDate">加载中...</span>
+          <span>•</span>
+          <span id="currentIssueStats">0 条前沿科技 / 0 条求职面经</span>
+        </div>
+        <h1 class="headline-title" id="currentIssueTitle">正在获取期刊详情...</h1>
+        <p class="headline-desc" id="currentIssueSubtitle">正在加载...</p>
+        
+        <!-- Interactive Category Tags -->
+        <div class="filter-chips-row" id="filterChipsRow">
+          <button class="filter-chip active" onclick="filterByTag('ALL')">全部</button>
+          <!-- Dynamic tags -->
+        </div>
+      </section>
+
+      <!-- Dual-Column Bento Grid -->
+      <div class="columns-grid">
+
+        <!-- Column 1: Frontier SOTA Models & Showcase Projects -->
+        <div class="column-panel">
+          <div class="column-header">
+            <h2 class="column-title">
+              <span>🌐 前沿 AI、SOTA 架构与优秀开源项目</span>
+            </h2>
+            <span class="column-count" id="col1Count">0 条</span>
+          </div>
+          <div id="col1Container" style="display:flex; flex-direction:column; gap:16px;">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <!-- Column 2: CS Campus Recruitment & Big Tech Interviews -->
+        <div class="column-panel">
+          <div class="column-header">
+            <h2 class="column-title">
+              <span>🎯 计科大学生求职热点与各大厂面经</span>
+            </h2>
+            <span class="column-count" id="col2Count">0 条</span>
+          </div>
+          <div id="col2Container" style="display:flex; flex-direction:column; gap:16px;">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toast">
+    <span id="toastIcon">✅</span>
+    <span id="toastMsg">操作成功</span>
+  </div>
+
+  <!-- Modal for Messages -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modalTitle">系统提示</h3>
+        <button class="btn-close" onclick="closeModal()">✕</button>
+      </div>
+      <div id="modalBody" style="font-size:14px; color:var(--text-muted); line-height:1.6;"></div>
+      <div style="display:flex; justify-content:flex-end;">
+        <button class="btn btn-primary" onclick="closeModal()">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- App Script -->
+  <script>
+    let archiveIndex = [];
+    let currentIssue = null;
+    let activeTag = 'ALL';
+    let searchQuery = '';
+
+    // ================= Initialization =================
+    document.addEventListener("DOMContentLoaded", async () => {
+      loadSavedTheme();
+      await loadArchiveIndex();
+    });
+
+    // Theme Switcher (Apple Warm Bento <-> Linear Dark)
+    function toggleTheme() {
+      const root = document.documentElement;
+      const current = root.getAttribute("data-theme") || "bento-warm";
+      const next = current === "bento-warm" ? "linear-dark" : "bento-warm";
+      root.setAttribute("data-theme", next);
+      localStorage.setItem("ft_theme", next);
+      showToast(`已切换至: ${next === "bento-warm" ? "Apple 暖白 Bento 杂志" : "Linear 暗黑科技玻璃"}`);
+    }
+
+    function loadSavedTheme() {
+      const saved = localStorage.getItem("ft_theme");
+      if (saved) {
+        document.documentElement.setAttribute("data-theme", saved);
+      }
+    }
+
+    // ================= Load Archive Index =================
+    async function loadArchiveIndex() {
+      try {
+        if (window.__STATIC_MODE__ && window.__ARCHIVE_INDEX__) {
+          // Static bundled mode
+          archiveIndex = window.__ARCHIVE_INDEX__;
+        } else {
+          // Dynamic mode
+          const res = await fetch("/api/issues");
+          const json = await res.json();
+          if (json.success) {
+            archiveIndex = json.data;
+          }
+        }
+
+        renderTimeline();
+
+        // Select the newest issue by default
+        if (archiveIndex.length > 0) {
+          await selectIssue(archiveIndex[0].date);
+        } else {
+          showEmptyState();
+        }
+      } catch (err) {
+        console.error("Failed to load archive index:", err);
+        if (window.__ARCHIVE_INDEX__ && window.__ARCHIVE_INDEX__.length > 0) {
+          archiveIndex = window.__ARCHIVE_INDEX__;
+          renderTimeline();
+          await selectIssue(archiveIndex[0].date);
+        } else {
+          showEmptyState();
+        }
+      }
+    }
+
+    function showEmptyState() {
+      document.getElementById("currentIssueTitle").textContent = "暂无期刊数据";
+      document.getElementById("currentIssueSubtitle").textContent = "请点击右上角「🚀 抓取今日」生成最新一期早报。";
+      document.getElementById("col1Container").innerHTML = `<div class="empty-state">暂无前沿科技内容</div>`;
+      document.getElementById("col2Container").innerHTML = `<div class="empty-state">暂无求职面经内容</div>`;
+    }
+
+    // ================= Render Timeline =================
+    function renderTimeline() {
+      const container = document.getElementById("issueTimelineList");
+      const badge = document.getElementById("issueCountBadge");
+      badge.textContent = `${archiveIndex.length} 期`;
+
+      if (archiveIndex.length === 0) {
+        container.innerHTML = `<div class="empty-state">暂无历史期刊</div>`;
+        return;
+      }
+
+      container.innerHTML = archiveIndex.map(item => {
+        const isActive = currentIssue && currentIssue.date === item.date;
+        const tags = (item.summary_tags || []).slice(0, 3).map(t => `<span class="tag-chip">${escapeHtml(t)}</span>`).join("");
+        return `
+          <div class="issue-item ${isActive ? 'active' : ''}" onclick="selectIssue('${item.date}')" id="timeline-${item.date}">
+            <div class="issue-item-top">
+              <span class="issue-badge">ISSUE #${String(item.issue_number).padStart(2, '0')}</span>
+              <span class="issue-date">${item.date}</span>
+            </div>
+            <div style="font-size:12px; font-weight:600; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+              ${escapeHtml(item.title)}
+            </div>
+            <div class="issue-tags-row">
+              ${tags}
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // ================= Select & Fetch Issue =================
+    async function selectIssue(dateStr) {
+      // Highlight in sidebar
+      document.querySelectorAll(".issue-item").forEach(el => el.classList.remove("active"));
+      const targetEl = document.getElementById(`timeline-${dateStr}`);
+      if (targetEl) targetEl.classList.add("active");
+
+      try {
+        if (window.__STATIC_MODE__ && window.__ARCHIVE_ISSUES__ && window.__ARCHIVE_ISSUES__[dateStr]) {
+          currentIssue = window.__ARCHIVE_ISSUES__[dateStr];
+        } else {
+          const res = await fetch(`/api/issues/${dateStr}`);
+          const json = await res.json();
+          if (json.success) {
+            currentIssue = json.data;
+          } else {
+            showToast(json.error || "获取期刊失败", "❌");
+            return;
+          }
+        }
+
+        activeTag = 'ALL';
+        renderCurrentIssue();
+      } catch (err) {
+        console.error("Error fetching issue details:", err);
+        showToast("读取期刊数据失败", "❌");
+      }
+    }
+
+    // ================= Render Issue Detail =================
+    function renderCurrentIssue() {
+      if (!currentIssue) return;
+
+      // Meta & Headline
+      document.getElementById("currentIssueNumberBadge").textContent = `ISSUE #${String(currentIssue.issue_number || 1).padStart(2, '0')}`;
+      document.getElementById("currentIssueDate").textContent = `${currentIssue.date} · 晨报速递`;
+      document.getElementById("currentIssueStats").textContent = `${currentIssue.ai_column?.length || 0} 条前沿突破 / ${currentIssue.cs_column?.length || 0} 条求职面经`;
+      document.getElementById("currentIssueTitle").textContent = currentIssue.title;
+      document.getElementById("currentIssueSubtitle").textContent = currentIssue.subtitle || "深度追踪前沿SOTA架构与高校CS校招硬核真题";
+
+      // Render Tags Filter Row
+      const filterRow = document.getElementById("filterChipsRow");
+      const defaultChips = [`<button class="filter-chip ${activeTag === 'ALL' ? 'active' : ''}" onclick="filterByTag('ALL')">全部</button>`];
+      const tags = currentIssue.summary_tags || [];
+      tags.forEach(tag => {
+        const cleanTag = tag.replace(/^#/, '');
+        defaultChips.push(`<button class="filter-chip ${activeTag === cleanTag ? 'active' : ''}" onclick="filterByTag('${cleanTag}')">#${escapeHtml(cleanTag)}</button>`);
+      });
+      filterRow.innerHTML = defaultChips.join("");
+
+      // Render Dual Columns
+      renderCards();
+    }
+
+    // ================= Filter & Render Cards =================
+    function renderCards() {
+      if (!currentIssue) return;
+
+      const aiCol = currentIssue.ai_column || [];
+      const csCol = currentIssue.cs_column || [];
+
+      // Filter by Search Query & Tag
+      const filterItem = (it) => {
+        const text = `${it.title} ${it.summary} ${it.tag} ${it.source} ${it.tech_breakthrough || ''}`.toLowerCase();
+        const matchesQuery = !searchQuery || text.includes(searchQuery.toLowerCase());
+        const matchesTag = activeTag === 'ALL' || (it.tag && it.tag.includes(activeTag)) || (text.includes(activeTag.toLowerCase()));
+        return matchesQuery && matchesTag;
+      };
+
+      const filteredAi = aiCol.filter(filterItem);
+      const filteredCs = csCol.filter(filterItem);
+
+      document.getElementById("col1Count").textContent = `${filteredAi.length} 条`;
+      document.getElementById("col2Count").textContent = `${filteredCs.length} 条`;
+
+      // Render Column 1
+      const col1Container = document.getElementById("col1Container");
+      if (filteredAi.length === 0) {
+        col1Container.innerHTML = `<div class="empty-state">未找到匹配的前沿科技条目</div>`;
+      } else {
+        col1Container.innerHTML = filteredAi.map((item, idx) => {
+          const isJepaOrSota = (item.tag || '').includes("JEPA") || (item.tag || '').includes("SOTA");
+          const tagClass = isJepaOrSota ? 'tag-sota' : 'tag-repo';
+          const techBreakthrough = item.tech_breakthrough || item.extra?.tech_breakthrough;
+          const stars = item.stars || item.extra?.stars;
+
+          return `
+            <article class="news-card">
+              <div class="card-top">
+                <span class="card-tag ${tagClass}">${escapeHtml(item.tag || '🤖 [前沿SOTA]')}</span>
+                <span class="card-source">
+                  ${escapeHtml(item.source || 'GitHub')}
+                  ${stars ? `<span class="card-stars">⭐ ${escapeHtml(stars)}</span>` : ''}
+                </span>
+              </div>
+              <a href="${item.url || '#'}" target="_blank" rel="noopener noreferrer" class="card-title">
+                ${escapeHtml(item.title)}
+              </a>
+              <p class="card-summary">${escapeHtml(item.summary)}</p>
+              ${techBreakthrough ? `
+                <div class="callout-box">
+                  <span class="callout-icon">💡</span>
+                  <div><strong>核心突破：</strong>${escapeHtml(techBreakthrough)}</div>
+                </div>
+              ` : ''}
+              <div class="card-footer">
+                <a href="${item.url || '#'}" target="_blank" rel="noopener noreferrer" class="card-link">
+                  查看论文 / 仓库 ↗
+                </a>
+                <button class="btn-copy-card" onclick="copyCardSnippet('${escapeHtml(item.title)}', '${item.url || ''}')">
+                  📋 复制
+                </button>
+              </div>
+            </article>
+          `;
+        }).join("");
+      }
+
+      // Render Column 2
+      const col2Container = document.getElementById("col2Container");
+      if (filteredCs.length === 0) {
+        col2Container.innerHTML = `<div class="empty-state">未找到匹配的求职面经条目</div>`;
+      } else {
+        col2Container.innerHTML = filteredCs.map((item, idx) => {
+          return `
+            <article class="news-card">
+              <div class="card-top">
+                <span class="card-tag tag-interview">${escapeHtml(item.tag || '🎯 [大厂面经]')}</span>
+                <span class="card-source">${escapeHtml(item.source || '牛客网')}</span>
+              </div>
+              <a href="${item.url || '#'}" target="_blank" rel="noopener noreferrer" class="card-title">
+                ${escapeHtml(item.title)}
+              </a>
+              <p class="card-summary">${escapeHtml(item.summary)}</p>
+              <div class="card-footer">
+                <a href="${item.url || '#'}" target="_blank" rel="noopener noreferrer" class="card-link">
+                  查看真题讨论 ↗
+                </a>
+                <button class="btn-copy-card" onclick="copyCardSnippet('${escapeHtml(item.title)}', '${item.url || ''}')">
+                  📋 复制
+                </button>
+              </div>
+            </article>
+          `;
+        }).join("");
+      }
+    }
+
+    // ================= Interactive Actions =================
+    function filterByTag(tag) {
+      activeTag = tag;
+      renderCurrentIssue();
+    }
+
+    function handleSearch() {
+      searchQuery = document.getElementById("searchInput").value.trim();
+      renderCards();
+    }
+
+    // 1. Copy Markdown
+    function copyCurrentMarkdown() {
+      if (!currentIssue) return;
+      const aiCol = currentIssue.ai_column || [];
+      const csCol = currentIssue.cs_column || [];
+
+      let md = `# 🌅 ${currentIssue.title}\n> 发布日期: ${currentIssue.date} | FrontierTech 往期公开智库\n\n`;
+      md += `## 🤖 栏目一：前沿 AI、SOTA 架构与优秀开源项目\n`;
+      aiCol.forEach((it, idx) => {
+        md += `**${idx + 1}. ${it.tag || ''} [${it.title}](${it.url})** _${it.source}_\n`;
+        md += `> ${it.summary}\n`;
+        if (it.tech_breakthrough) {
+          md += `> 💡 核心突破：${it.tech_breakthrough}\n`;
+        }
+        md += `\n`;
+      });
+
+      md += `---\n\n## 🎯 栏目二：计算机专业求职热点与各大厂面经通报\n`;
+      csCol.forEach((it, idx) => {
+        md += `**${idx + 1}. ${it.tag || ''} [${it.title}](${it.url})** _${it.source}_\n`;
+        md += `> ${it.summary}\n\n`;
+      });
+
+      navigator.clipboard.writeText(md).then(() => {
+        showToast("已复制当前期刊完整 Markdown 到剪贴板！");
+      }).catch(err => {
+        showToast("复制失败，请手动选择", "❌");
+      });
+    }
+
+    function copyCardSnippet(title, url) {
+      const text = `${title}\n${url}`;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast("已复制该条资讯！");
+      });
+    }
+
+    // 2. Push to Feishu
+    async function pushToFeishu() {
+      if (!currentIssue) return;
+      const btn = document.getElementById("btnPushFeishu");
+      btn.textContent = "⏳ 推送中...";
+      btn.disabled = true;
+
+      try {
+        const res = await fetch("/api/push_feishu", {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({date: currentIssue.date})
+        });
+        const data = await res.json();
+        if (data.success) {
+          showModal("飞书推送成功", `🎉 早报已成功推送到您绑定的飞书应用！\n\n• 日期：${currentIssue.date}\n• 标题：${currentIssue.title}\n• 飞书卡片已实时下发至客户端。`);
+        } else {
+          showModal("推送失败", `⚠️ 推送飞书时出错: ${data.error || '未知错误'}`);
+        }
+      } catch (err) {
+        showModal("网络错误", `无法连接本地推送接口: ${err.message}`);
+      } finally {
+        btn.textContent = "📢 推送飞书";
+        btn.disabled = false;
+      }
+    }
+
+    // 3. Fetch Today's Issue Live
+    async function fetchTodayLive() {
+      const btn = document.getElementById("btnFetchLive");
+      btn.textContent = "⏳ 正在采集...";
+      btn.disabled = true;
+
+      showToast("正在启动全球 SOTA 论文、JEPA 模型与牛客面经实时爬虫...", "📡");
+
+      try {
+        const res = await fetch("/api/fetch_today", {
+          method: "POST"
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast("今日早报已成功生成并归档！", "🎉");
+          await loadArchiveIndex();
+        } else {
+          showModal("抓取异常", `抓取失败: ${data.error}`);
+        }
+      } catch (err) {
+        showModal("网络异常", `无法触发抓取: ${err.message}`);
+      } finally {
+        btn.textContent = "🚀 抓取今日";
+        btn.disabled = false;
+      }
+    }
+
+    // 4. Export Static Site
+    async function exportStaticSite() {
+      showToast("正在打包导出纯静态站点...", "📦");
+      try {
+        const res = await fetch("/api/export_static", {
+          method: "POST"
+        });
+        const data = await res.json();
+        if (data.success) {
+          showModal("静态站点导出成功", `✅ 站点已打包至目录：\n${data.dist_dir}\n\n包含全部历史期刊数据与离线前端代码。您可以将 dist_web 目录直接上传至 GitHub Pages、Vercel 或局域网静态服务器！`);
+        } else {
+          showModal("导出失败", data.error);
+        }
+      } catch (err) {
+        showModal("导出异常", err.message);
+      }
+    }
+
+    // ================= Helpers =================
+    function showToast(msg, icon = "✅") {
+      const toast = document.getElementById("toast");
+      document.getElementById("toastMsg").textContent = msg;
+      document.getElementById("toastIcon").textContent = icon;
+      toast.classList.add("show");
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3000);
+    }
+
+    function showModal(title, body) {
+      document.getElementById("modalTitle").textContent = title;
+      document.getElementById("modalBody").innerHTML = body.replace(/\n/g, "<br>");
+      document.getElementById("modalBackdrop").classList.add("open");
+    }
+
+    function closeModal() {
+      document.getElementById("modalBackdrop").classList.remove("open");
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+  </script>
+</body>
+</html>
