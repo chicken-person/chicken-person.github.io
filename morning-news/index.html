@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FrontierTech Daily | 前沿科技与计科求职早报站</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     /* ========================================================
        Apple Warm White Bento Grid & Modern Linear Theme Tokens
@@ -692,6 +693,126 @@
       color: var(--text-muted);
       font-size: 14px;
     }
+
+    /* ================= In-place Fulltext Reader Drawer ================= */
+    .reader-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(8px);
+      z-index: 900;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reader-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .reader-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: min(880px, 94vw);
+      background: var(--bg-surface);
+      border-left: 1px solid var(--border-subtle);
+      box-shadow: -12px 0 50px rgba(0, 0, 0, 0.25);
+      z-index: 950;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+    }
+    .reader-drawer.open {
+      transform: translateX(0);
+    }
+    .reader-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--bg-surface-subtle);
+    }
+    .reader-body {
+      padding: 30px 36px;
+      overflow-y: auto;
+      flex: 1;
+      line-height: 1.8;
+      font-size: 15px;
+      color: var(--text-main);
+    }
+    .reader-body h1 { font-size: 24px; font-weight: 800; margin: 0 0 16px; line-height: 1.35; color: var(--text-main); }
+    .reader-body h2 { font-size: 18px; font-weight: 700; margin: 26px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--border-subtle); color: var(--text-main); }
+    .reader-body h3 { font-size: 16px; font-weight: 700; margin: 18px 0 8px; color: var(--text-main); }
+    .reader-body p { margin-bottom: 14px; color: var(--text-main); }
+    .reader-body blockquote {
+      border-left: 4px solid var(--accent-primary);
+      padding: 10px 16px;
+      background: var(--bg-surface-subtle);
+      border-radius: 0 10px 10px 0;
+      margin: 16px 0;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    .reader-body pre {
+      background: #11141C;
+      color: #E2E8F0;
+      border-radius: 12px;
+      padding: 16px;
+      margin: 16px 0;
+      overflow-x: auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .reader-body code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: var(--bg-surface-subtle);
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-size: 13px;
+      color: var(--accent-primary);
+    }
+    .reader-body pre code {
+      background: transparent;
+      padding: 0;
+      color: inherit;
+    }
+    .reader-body ul, .reader-body ol {
+      margin: 12px 0 16px 24px;
+    }
+    .reader-body li {
+      margin-bottom: 6px;
+    }
+    .reader-body hr {
+      border: none;
+      height: 1px;
+      background: var(--border-subtle);
+      margin: 24px 0;
+    }
+    .card-clickable {
+      cursor: pointer;
+    }
+    .btn-read-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      background: var(--accent-primary);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-read-badge:hover {
+      background: var(--accent-primary-hover);
+    }
   </style>
   <script src="archive_data.js"></script>
 </head>
@@ -823,6 +944,32 @@
       <div style="display:flex; justify-content:flex-end;">
         <button class="btn btn-primary" onclick="closeModal()">确定</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Fulltext In-place Reader Drawer (Zero-jump reading) -->
+  <div class="reader-backdrop" id="readerBackdrop" onclick="closeFulltextReader()"></div>
+  <div class="reader-drawer" id="readerDrawer">
+    <div class="reader-header">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span id="readerTagBadge" class="card-tag tag-sota">前沿SOTA</span>
+        <span id="readerSourceText" style="font-size:12px; color:var(--text-muted);">Meta AI</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <button class="btn btn-secondary" onclick="copyReaderMarkdown()" style="padding:6px 12px; font-size:12px;">
+          📋 复制全文 MD
+        </button>
+        <button class="btn-close" onclick="closeFulltextReader()" style="font-size:20px; line-height:1;">✕</button>
+      </div>
+    </div>
+    <div class="reader-body" id="readerBody">
+      <!-- Full Markdown dynamically rendered here -->
+    </div>
+    <div class="reader-footer" id="readerFooter" style="padding:14px 24px; border-top:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center; background:var(--bg-surface-subtle);">
+      <span style="font-size:12px; color:var(--text-muted);">✨ Firecrawl 全文精准抓取 · 原地沉浸阅读免跳转</span>
+      <a href="#" id="readerOriginalLink" target="_blank" rel="noopener noreferrer" class="card-link" style="font-size:12px;">
+        🔗 查看原站出处 (可选) ↗
+      </a>
     </div>
   </div>
 
@@ -1000,6 +1147,8 @@
 
       const filteredAi = aiCol.filter(filterItem);
       const filteredCs = csCol.filter(filterItem);
+      window.__currentFilteredAi = filteredAi;
+      window.__currentFilteredCs = filteredCs;
 
       document.getElementById("col1Count").textContent = `${filteredAi.length} 条`;
       document.getElementById("col2Count").textContent = `${filteredCs.length} 条`;
@@ -1024,23 +1173,30 @@
                   ${stars ? `<span class="card-stars">⭐ ${escapeHtml(stars)}</span>` : ''}
                 </span>
               </div>
-              <a href="${item.url || '#'}" target="_blank" rel="noopener noreferrer" class="card-title">
+              <h3 class="card-title card-clickable" onclick="openFulltextReader(${idx}, 'ai')">
                 ${escapeHtml(item.title)}
-              </a>
-              <p class="card-summary">${escapeHtml(item.summary)}</p>
+              </h3>
+              <p class="card-summary card-clickable" onclick="openFulltextReader(${idx}, 'ai')">
+                ${escapeHtml(item.summary)}
+              </p>
               ${techBreakthrough ? `
-                <div class="callout-box">
+                <div class="callout-box card-clickable" onclick="openFulltextReader(${idx}, 'ai')">
                   <span class="callout-icon">💡</span>
                   <div><strong>核心突破：</strong>${escapeHtml(techBreakthrough)}</div>
                 </div>
               ` : ''}
               <div class="card-footer">
-                <a href="${item.url || '#'}" target="_blank" rel="noopener noreferrer" class="card-link">
-                  查看论文 / 仓库 ↗
-                </a>
-                <button class="btn-copy-card" onclick="copyCardSnippet('${escapeHtml(item.title)}', '${item.url || ''}')">
-                  📋 复制
+                <button class="btn-read-badge" onclick="openFulltextReader(${idx}, 'ai')">
+                  📖 原地阅读全文 (免跳转)
                 </button>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <button class="btn-copy-card" onclick="copyCardSnippet('${escapeHtml(item.title)}', '${item.url || ''}')">
+                    📋 复制
+                  </button>
+                  <a href="${item.url || '#'}" target="_blank" rel="noopener noreferrer" class="card-link" style="color:var(--text-subtle); font-size:11px;" title="在新标签页中打开原站出处">
+                    原站 ↗
+                  </a>
+                </div>
               </div>
             </article>
           `;
@@ -1059,17 +1215,24 @@
                 <span class="card-tag tag-interview">${escapeHtml(item.tag || '🎯 [大厂面经]')}</span>
                 <span class="card-source">${escapeHtml(item.source || '牛客网')}</span>
               </div>
-              <a href="${item.url || '#'}" target="_blank" rel="noopener noreferrer" class="card-title">
+              <h3 class="card-title card-clickable" onclick="openFulltextReader(${idx}, 'cs')">
                 ${escapeHtml(item.title)}
-              </a>
-              <p class="card-summary">${escapeHtml(item.summary)}</p>
+              </h3>
+              <p class="card-summary card-clickable" onclick="openFulltextReader(${idx}, 'cs')">
+                ${escapeHtml(item.summary)}
+              </p>
               <div class="card-footer">
-                <a href="${item.url || '#'}" target="_blank" rel="noopener noreferrer" class="card-link">
-                  查看真题讨论 ↗
-                </a>
-                <button class="btn-copy-card" onclick="copyCardSnippet('${escapeHtml(item.title)}', '${item.url || ''}')">
-                  📋 复制
+                <button class="btn-read-badge" onclick="openFulltextReader(${idx}, 'cs')">
+                  📖 原地看题解 (免跳转)
                 </button>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <button class="btn-copy-card" onclick="copyCardSnippet('${escapeHtml(item.title)}', '${item.url || ''}')">
+                    📋 复制
+                  </button>
+                  <a href="${item.url || '#'}" target="_blank" rel="noopener noreferrer" class="card-link" style="color:var(--text-subtle); font-size:11px;" title="在新标签页中打开原站讨论">
+                    原站 ↗
+                  </a>
+                </div>
               </div>
             </article>
           `;
@@ -1196,6 +1359,116 @@
         showModal("导出异常", err.message);
       }
     }
+
+    // ================= In-place Fulltext Reader Logic =================
+    let currentReadingItem = null;
+
+    function openFulltextReader(idx, type) {
+      const list = type === 'ai' ? (window.__currentFilteredAi || currentIssue?.ai_column || []) : (window.__currentFilteredCs || currentIssue?.cs_column || []);
+      const item = list[idx];
+      if (!item) return;
+
+      currentReadingItem = item;
+
+      // Header badges
+      const tagBadge = document.getElementById("readerTagBadge");
+      const isJepaOrSota = (item.tag || '').includes("JEPA") || (item.tag || '').includes("SOTA");
+      tagBadge.textContent = item.tag || (type === 'ai' ? '🤖 [前沿SOTA]' : '🎯 [大厂面经]');
+      tagBadge.className = 'card-tag ' + (type === 'ai' ? (isJepaOrSota ? 'tag-sota' : 'tag-repo') : 'tag-interview');
+
+      const sourceText = document.getElementById("readerSourceText");
+      sourceText.innerHTML = `${escapeHtml(item.source || '')} ${item.stars ? '· ⭐ ' + escapeHtml(item.stars) : ''}`;
+
+      const link = document.getElementById("readerOriginalLink");
+      if (item.url) {
+        link.href = item.url;
+        link.style.display = 'inline-flex';
+      } else {
+        link.style.display = 'none';
+      }
+
+      // Body content
+      const body = document.getElementById("readerBody");
+      let mdContent = item.full_markdown;
+      if (!mdContent || mdContent.trim() === '') {
+        mdContent = `# ${item.title}\n\n` +
+          `> 来源: ${item.source || '未知'} | 标签: ${item.tag || '通用'}\n\n` +
+          `### 📋 资讯摘要\n${item.summary}\n\n`;
+        if (item.tech_breakthrough) {
+          mdContent += `### 💡 核心技术突破\n${item.tech_breakthrough}\n\n`;
+        }
+        if (item.url) {
+          mdContent += `🔗 原站出处: [${item.url}](${item.url})\n`;
+        }
+      }
+
+      body.innerHTML = renderMarkdownToHtml(mdContent);
+      body.scrollTop = 0;
+
+      // Open Drawer
+      document.getElementById("readerBackdrop").classList.add("open");
+      document.getElementById("readerDrawer").classList.add("open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function closeFulltextReader() {
+      document.getElementById("readerBackdrop").classList.remove("open");
+      document.getElementById("readerDrawer").classList.remove("open");
+      document.body.style.overflow = "";
+    }
+
+    function copyReaderMarkdown() {
+      if (!currentReadingItem) return;
+      const md = currentReadingItem.full_markdown || `# ${currentReadingItem.title}\n\n${currentReadingItem.summary}`;
+      navigator.clipboard.writeText(md).then(() => {
+        showToast("已复制该篇完整 Markdown 到剪贴板！", "📋");
+      }).catch(() => {
+        showToast("复制失败", "❌");
+      });
+    }
+
+    // Markdown Parser (Marked.js with standalone fallback)
+    function renderMarkdownToHtml(md) {
+      if (typeof marked !== 'undefined' && marked.parse) {
+        try {
+          return marked.parse(md);
+        } catch (e) {
+          console.warn("marked parse error, using fallback", e);
+        }
+      }
+      let html = escapeHtml(md);
+      html = html.replace(/```([a-zA-Z0-9_-]*)\n([\s\S]*?)```/g, (match, lang, code) => {
+        return `<pre><code class="language-${lang}">${code}</code></pre>`;
+      });
+      html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+      html = html.replace(/^#### (.*$)/gim, '<h4>$1</h4>');
+      html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
+      html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
+      html = html.replace(/^# (.*$)/gim, '<h1>$1</h1>');
+      html = html.replace(/^\> (.*$)/gim, '<blockquote>$1</blockquote>');
+      html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+      html = html.replace(/^---$/gim, '<hr>');
+      html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+      html = html.replace(/^\s*-\s+(.*$)/gim, '<li>$1</li>');
+      html = html.split('\n\n').map(p => {
+        p = p.trim();
+        if (!p) return '';
+        if (p.startsWith('<h') || p.startsWith('<pre') || p.startsWith('<blockquote') || p.startsWith('<hr')) {
+          return p;
+        }
+        return `<p>${p.replace(/\n/g, '<br>')}</p>`;
+      }).join('');
+      return html;
+    }
+
+    // Keyboard ESC listener
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeFulltextReader();
+        closeModal();
+      }
+    });
 
     // ================= Helpers =================
     function showToast(msg, icon = "✅") {
